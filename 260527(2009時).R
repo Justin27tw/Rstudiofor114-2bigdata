@@ -305,9 +305,22 @@ model_data <- clean_df %>%
 lm_model <- lm(使用秒數 ~ 是否為週末 + 車種 + 時段, data = model_data)
 model_summary <- summary(lm_model)
 
-png(file.path(output_dir, "14_迴歸模型殘差診斷圖.png"), width = 800, height = 800)
+# 提升圖片基礎尺寸與解析度 (res)，讓字體放大後不會模糊
+png(file.path(output_dir, "14_迴歸模型殘差診斷圖.png"), width = 1200, height = 1200, res = 120)
+
 old_par <- par(no.readonly = TRUE)
-par(mfrow = c(2, 2))
+
+# 設定圖形參數：放大各種字體與調整邊距
+par(
+  mfrow = c(2, 2),       # 保持 2x2 四宮格排列
+  mar = c(5, 5, 4, 2),   # 加大圖形邊距 (下, 左, 上, 右)，避免字體放大後被切斷
+  cex = 1.2,             # 整體繪圖元件放大 1.2 倍
+  cex.main = 1.6,        # 【主標題放大】 (例如 Residuals vs Fitted)
+  cex.lab = 1.4,         # 【X/Y 軸標籤放大】 (例如 Fitted values)
+  cex.axis = 1.3,        # 【座標軸數字放大】 (讓刻度數字清晰可見)
+  cex.sub = 1.3          # 【副標題放大】
+)
+
 plot(lm_model)
 par(old_par)
 dev.off()
